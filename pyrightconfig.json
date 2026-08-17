@@ -1,0 +1,24 @@
+{
+  "executionEnvironments": [
+    {
+      "root": "homework/homework02",
+      "extraPaths": ["homework/homework02"]
+    },
+    {
+      "root": "homework/homework03",
+      "extraPaths": ["homework/homework03"]
+    },
+    {
+      "root": "homework/homework04",
+      "extraPaths": ["homework/homework04"]
+    },
+    {
+      "root": "homework/homework05",
+      "extraPaths": ["homework/homework05"]
+    },
+    {
+      "root": "project",
+      "extraPaths": ["project"]
+    }
+  ]
+}
