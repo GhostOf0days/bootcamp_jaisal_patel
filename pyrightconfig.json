@@ -17,6 +17,10 @@
       "extraPaths": ["homework/homework05"]
     },
     {
+      "root": "homework/homework06",
+      "extraPaths": ["homework/homework06"]
+    },
+    {
       "root": "project",
       "extraPaths": ["project"]
     }

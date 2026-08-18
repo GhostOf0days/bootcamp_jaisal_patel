@@ -5,6 +5,7 @@
 - Stage 03 submission: [`homework/homework03/`](../homework/homework03/) (NumPy/pandas notebook and `src/utils.py`)
 - Stage 04 submission: [`homework/homework04/`](../homework/homework04/) (API/scrape notebook and raw CSVs)
 - Stage 05 submission: [`homework/homework05/`](../homework/homework05/) (storage notebook and README)
+- Stage 06 submission: [`homework/homework06/`](../homework/homework06/) (cleaning notebook, `src/cleaning.py`, and processed CSV)
 - Working codebase: [`project/`](.)
 
 ## Problem Statement
@@ -32,12 +33,13 @@ Predictive and descriptive. Classification (Buy/Hold/Sell from rolling returns a
 
 ## Lifecycle Mapping
 
-- Define problem framing and stakeholder goals → Stage 1 → README + stakeholder memo
+- Define problem framing and stakeholder goals → Stage 1 → README and stakeholder memo
 - Create reproducible environment → Stage 2 → `project/` scaffold, `.env`, `src/config.py`
 - Explore price data and features → Stage 3 → summary stats, rolling returns, groupby, CSV
-- Ingest and accumulate daily history → Stage 4 → timestamped raw CSV + scraped metadata
+- Ingest and accumulate daily history → Stage 4 → timestamped raw CSV and scraped metadata
 - Save and reload card-by-date price dataset → Stage 5 → CSV in `data/raw/`, Parquet in `data/processed/`
-- Train/evaluate models → later `model/` + `notebooks/` → Buy/Hold/Sell + % change outputs
+- Clean missing values and scale features → Stage 6 → `src/cleaning.py` and processed CSV
+- Train/evaluate models → later `model/` and `notebooks/` → Buy/Hold/Sell and % change outputs
 
 ## Repo Plan
 
@@ -50,3 +52,13 @@ Predictive and descriptive. Classification (Buy/Hold/Sell from rolling returns a
 My file paths come from `.env`: `DATA_DIR_RAW=data/raw` and `DATA_DIR_PROCESSED=data/processed`.
 
 I read and write using env variables through `src/io_utils.py`, which has `write_df` and `read_df`. My code picks CSV or Parquet from the file suffix and creates the missing folders. It also raises an error if the Parquet engine is missing.
+
+## Cleaning Strategy
+
+I fill `market_price` with each column's median so a few missing numbers do not result in my code dropping the entire column. Median fill assumes those gaps are not systematically biased due to the MCAR or MAR described in lecture.
+
+I drop columns whose NA share is above 0.5. This removes columns which are 50% or more empty. In doing so, I assume that column is not needed for later work. I also drop rows with non-positive `market_price`.
+
+I min-max scale `market_price` to [0, 1] so that the columns share a range. When I min-max scale, I assume the observed min and max are representative.
+
+In `src/cleaning.py`, I put helper functions that I added: `fill_missing_median`, `drop_missing`, and `normalize_data`. The data that I cleaned is in `data/processed/prismatic_prices_cleaned.csv`.

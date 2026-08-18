@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-def load_env() -> None:
+def load_env():
     # Load key/value pairs from `.env`.
     load_dotenv()
 
