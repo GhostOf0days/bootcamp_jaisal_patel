@@ -16,7 +16,7 @@ def save_csv(df, prefix, raw_dir, **meta):
     mid = "_".join([f"{k}-{str(v).replace(' ', '-')[:20]}" for k, v in meta.items()])
     path = raw_dir / f"{prefix}_{mid}_{ts()}.csv"
     df.to_csv(path, index=False)
-    print("Saved", path)
+    print("Saved:", path)
     return path
 
 

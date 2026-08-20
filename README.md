@@ -8,6 +8,7 @@
 - Stage 04 submission: [`homework/homework04/`](homework/homework04/) (API/scrape notebook and raw CSVs)
 - Stage 05 submission: [`homework/homework05/`](homework/homework05/) (storage notebook and README)
 - Stage 06 submission: [`homework/homework06/`](homework/homework06/) (cleaning notebook, `src/cleaning.py`, and processed CSV)
+- Stage 07 submission: [`homework/homework07/`](homework/homework07/) (outliers notebook, `src/outliers.py`, and sensitivity CSV)
 - Working codebase: [`project/`](project/)
 
 ## Folder Structure

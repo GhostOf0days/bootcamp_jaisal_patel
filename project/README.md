@@ -6,6 +6,7 @@
 - Stage 04 submission: [`homework/homework04/`](../homework/homework04/) (API/scrape notebook and raw CSVs)
 - Stage 05 submission: [`homework/homework05/`](../homework/homework05/) (storage notebook and README)
 - Stage 06 submission: [`homework/homework06/`](../homework/homework06/) (cleaning notebook, `src/cleaning.py`, and processed CSV)
+- Stage 07 submission: [`homework/homework07/`](../homework/homework07/) (outliers notebook, `src/outliers.py`, and sensitivity CSV)
 - Working codebase: [`project/`](.)
 
 ## Problem Statement
@@ -39,11 +40,12 @@ Predictive and descriptive. Classification (Buy/Hold/Sell from rolling returns a
 - Ingest and accumulate daily history → Stage 4 → timestamped raw CSV and scraped metadata
 - Save and reload card-by-date price dataset → Stage 5 → CSV in `data/raw/`, Parquet in `data/processed/`
 - Clean missing values and scale features → Stage 6 → `src/cleaning.py` and processed CSV
+- Flag outliers and test sensitivity → Stage 7 → `src/outliers.py` and processed sensitivity table
 - Train/evaluate models → later `model/` and `notebooks/` → Buy/Hold/Sell and % change outputs
 
 ## Repo Plan
 
-`data/`, `src/`, `notebooks/`, `docs/`, `model/` under `project/`; homework in `homework/homeworkNumber/`.
+`data/`, `src/`, `notebooks/`, `docs/`, `reports/`, `model/` under `project/`, homework in `homework/homeworkNumber/`.
 
 ## Data Storage
 
@@ -62,3 +64,13 @@ I drop columns whose NA share is above 0.5. This removes columns which are 50% o
 I min-max scale `market_price` to [0, 1] so that the columns share a range. When I min-max scale, I assume the observed min and max are representative.
 
 In `src/cleaning.py`, I put helper functions that I added: `fill_missing_median`, `drop_missing`, and `normalize_data`. The data that I cleaned is in `data/processed/prismatic_prices_cleaned.csv`.
+
+## Outliers and Risk Assumptions
+
+I flag IQR outliers on `market_price` with k=0.5. Lecture k=1.5 flagged about 0.13 on these prices because SIRs are already outside the quartiles. When I used IQR with k=0.5,=I assumed quartiles could capture the majority of card prices.
+
+I also flagged Z-score outliers with threshold 3.0 and winsorized at 5%/95%. When I used Z-score with 0 degrees of freedomm, I assumed a roughly normal sample. When I winsorized at 5%/95%, I assumed the tails are noisy.
+
+If those valauble SIRs are the cards my screener should rank, then dropping them would hide the signal. I keep all the cards and save the comparison in `data/processed/outlier_sensitivity.csv`.
+
+In `src/outliers.py`, I put helper functions that I added: `detect_outliers_iqr`, `detect_outliers_zscore`, and `winsorize_series`.
